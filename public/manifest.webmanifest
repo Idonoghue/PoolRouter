@@ -16,7 +16,7 @@
 	],
 	"id": "/",
 	"lang": "en",
-	"name": "Vitamin",
+	"name": "Pool Router",
 	"scope": "/",
 	"screenshots": [
 		{
@@ -44,7 +44,7 @@
 			"type": "image/png"
 		}
 	],
-	"short_name": "Vitamin",
+	"short_name": "PoolRouter",
 	"start_url": "/",
 	"theme_color": "#BD34FE"
 }

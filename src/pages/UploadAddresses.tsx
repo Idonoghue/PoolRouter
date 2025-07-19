@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noConsole: <explanation> */
 import mapboxgl from 'mapbox-gl'
 import Papa from 'papaparse'
 import React, {useState} from 'react'
@@ -10,9 +11,11 @@ export const UploadAddresses = () => {
 	const [geocodedPoints, setGeocodedPoints] = useState<
 		{lat: number; lon: number; original: string}[]
 	>([])
+
 	const mapContainer = React.useRef<HTMLDivElement | null>(null)
 	const mapRef = React.useRef<mapboxgl.Map | null>(null)
 
+	// initialize map
 	React.useEffect(() => {
 		if (mapRef.current || !mapContainer.current) return // prevent re-init
 
@@ -31,6 +34,38 @@ export const UploadAddresses = () => {
 		})
 	}, [])
 
+	// if geocoded points change, update map
+	React.useEffect(() => {
+		if (!mapRef.current) return
+		const map = mapRef.current
+		if (!map) return
+
+		const addMarkersAndZoom = (
+			m: mapboxgl.Map,
+			points: {lat: number; lon: number; original: string}[]
+		) => {
+			const bounds = new mapboxgl.LngLatBounds()
+			points.forEach(({lat, lon, original}) => {
+				new mapboxgl.Marker()
+					.setLngLat([lon, lat])
+					.on('click', () => {
+						alert(`Address: ${original}`)
+					})
+					.addTo(m)
+
+				bounds.extend([lon, lat])
+			})
+
+			m.fitBounds(bounds, {padding: 50})
+		}
+
+		if (map.isStyleLoaded()) {
+			addMarkersAndZoom(map, geocodedPoints)
+		} else {
+			map.once('load', () => addMarkersAndZoom(map, geocodedPoints))
+		}
+	}, [geocodedPoints])
+
 	return (
 		<div className='h-[90vh] w-[90vw]'>
 			<h1>Multi-Day Route Optimizer</h1>
@@ -43,36 +78,6 @@ export const UploadAddresses = () => {
 					const addresses = await parseCSV(file)
 
 					setGeocodedPoints(addresses)
-
-					if (!mapRef.current) return
-
-					const map = mapRef.current
-					if (!map) return
-
-					const addMarkersAndZoom = (
-						map: mapboxgl.Map,
-						points: typeof addresses
-					) => {
-						const bounds = new mapboxgl.LngLatBounds()
-						points.forEach(({lat, lon, original}) => {
-							new mapboxgl.Marker()
-								.setLngLat([lon, lat])
-								.on('click', () => {
-									alert(`Address: ${original}`)
-								})
-								.addTo(map)
-
-							bounds.extend([lon, lat])
-						})
-
-						map.fitBounds(bounds, {padding: 50})
-					}
-
-					if (map.isStyleLoaded()) {
-						addMarkersAndZoom(map, addresses)
-					} else {
-						map.once('load', () => addMarkersAndZoom(map, addresses))
-					}
 				}}
 				type='file'
 			/>

@@ -51,7 +51,8 @@
 				"rules": {
 					"correctness": {
 						"useImportExtensions": "off",
-						"noUndeclaredDependencies": "off"
+						"noUndeclaredDependencies": "off",
+						"noNodejsModules": "off"
 					},
 					"nursery": {
 						"noUnresolvedImports": "off",
@@ -59,7 +60,8 @@
 						"useExplicitType": "off",
 						"useForComponent": "off",
 						"useExportsLast": "off",
-						"useSortedClasses": "off"
+						"useSortedClasses": "off",
+						"noAwaitInLoop": "off"
 					},
 					"suspicious": {
 						"noReactSpecificProps": "off"

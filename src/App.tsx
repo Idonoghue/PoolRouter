@@ -1,5 +1,5 @@
 import {LoadingOrError} from 'components/LoadingOrError'
-import {UploadAddresses} from 'pages/UploadAddresses'
+import {AddressMap} from 'pages/AddressMap'
 import {lazy, Suspense} from 'react'
 import {ErrorBoundary, type FallbackProps} from 'react-error-boundary'
 import {Route, Routes} from 'react-router'
@@ -19,7 +19,7 @@ export const App = () => {
 				<Routes>
 					{/* <Route element={<Gallery />} index={true} /> */}
 					<Route element={<Details />} path=':fruitName' />
-					<Route element={<UploadAddresses />} index />
+					<Route element={<AddressMap />} index />
 				</Routes>
 			</Suspense>
 		</ErrorBoundary>

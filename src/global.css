@@ -3,3 +3,29 @@
 @theme {
 	--font-sans: Inter, sans-serif;
 }
+
+.custom-marker {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	pointer-events: none; /* makes marker non-interactive unless needed */
+	color: black;
+}
+
+.marker-label {
+	margin-bottom: 0px;
+	background: white;
+	border: 1px solid black;
+	border-radius: 4px;
+	padding: 0px 2px;
+	font-size: 12px;
+	white-space: nowrap;
+	pointer-events: auto; /* remove if you don’t want hover/click */
+}
+
+.marker-dot {
+	width: 6px;
+	height: 6px;
+	background: black;
+	border-radius: 50%;
+}

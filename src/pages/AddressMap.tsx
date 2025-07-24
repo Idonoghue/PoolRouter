@@ -46,11 +46,18 @@ export const AddressMap = () => {
 		) => {
 			const bounds = new mapboxgl.LngLatBounds()
 			points.forEach(({lat, lon, original}) => {
-				new mapboxgl.Marker()
+				// Create a custom div element
+				const el = document.createElement('div')
+				el.className = 'custom-marker' // You can style this via CSS
+				el.textContent = original
+
+				// Add inner HTML with a circle and label
+				el.innerHTML = `
+    <div class="marker-label">${original}</div>
+    <div class="marker-dot"></div>
+  `
+				new mapboxgl.Marker({element: el, anchor: 'bottom'})
 					.setLngLat([lon, lat])
-					.on('click', () => {
-						alert(`Address: ${original}`)
-					})
 					.addTo(m)
 
 				bounds.extend([lon, lat])
@@ -67,10 +74,10 @@ export const AddressMap = () => {
 	}, [geocodedPoints])
 
 	return (
-		<div className='h-[90vh] w-[90vw]'>
-			<h1>Multi-Day Route Optimizer</h1>
+		<div className='relative w-screen h-screen'>
 			<input
 				accept='.csv'
+				className='absolute top-0 right-0 z-10 pl-2 transition-all rounded-l-lg cursor-pointer! bg-white/50 backdrop-blur-sm hover:scale-105 text-black'
 				onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
 					const file = e.target.files?.[0]
 					if (!file) return
@@ -81,10 +88,7 @@ export const AddressMap = () => {
 				}}
 				type='file'
 			/>
-			<div
-				className='relative flex flex-col w-full h-full'
-				ref={mapContainer}
-			/>
+			<div className='flex flex-col w-full h-full' ref={mapContainer} />
 		</div>
 	)
 }

@@ -119,7 +119,9 @@ const parseCSV = (
 
 				Promise.all(
 					addressesText.map(async address => {
-						const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address.concat(' Las Cruces'))}.json?access_token=${mapboxgl.accessToken}`
+						const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+							address.concat(' Las Cruces')
+						)}.json?access_token=${mapboxgl.accessToken}`
 						const res = await fetch(url)
 						const data = await res.json()
 						if (data.features?.length > 0) {
